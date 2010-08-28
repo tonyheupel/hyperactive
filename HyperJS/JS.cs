@@ -10,9 +10,9 @@ namespace TonyHeupel.HyperJS
     /// <summary>
     /// The Global object.
     /// JS.cs - Playing with JavaScript-type object creation within C# using closures
-    /// and dynamic types with my HyperHypo (more than C#, less than JavaScript) class.
+    /// and dynamic types with my HyperJS/HyperHypo (more than C#, less than JavaScript) class.
     /// </summary>
-    public class JS : HyperHypo
+    public class JS : JSObject
     {
         /// <summary>
         /// cs is the instance accessor for the JS class so that instead of using
@@ -42,7 +42,7 @@ namespace TonyHeupel.HyperJS
             /// this won't work the same way as in JavaScript.)
             /// </summary>
             that.Object = new Func<dynamic, dynamic>(delegate(dynamic self) {
-                    dynamic o = new HyperHypo();
+                    dynamic o = new JSObject();
                     self = self ?? o;
                     o.toString = new Func<string>(delegate() { return BaseToString(self); });
 
@@ -71,7 +71,7 @@ namespace TonyHeupel.HyperJS
         }
 
         #region undedfined
-        private class Undefined
+        private class Undefined : JSObject
         {
             public override string ToString()
             {
@@ -84,7 +84,7 @@ namespace TonyHeupel.HyperJS
 
         #region NaN
         // TODO: redefine in terms of something else?
-        private class NaNClass
+        private class NaNClass : JSObject
         {
             public override string ToString()
             {
@@ -98,12 +98,12 @@ namespace TonyHeupel.HyperJS
         #region Infinity
         // TODO: redefine this in terms of Numeric later and reference Numeric.POSITIVE_INFINITY constant?
         //       (actually, I'm hoping Function() or some use of delegate or Func<> returning a dynamic
-        //       will allow me to attach properties to method/function instances so I can actually do something
+        //       will allow HyperJS to attach properties to method/function instances so I can actually do something
         //       like Numeric.POSITIVE_INFINITY; otherwise, I'll have to fake it with a Numeric class and a static
         //       public constant; then creating a Numeric is "JS.Numeric(value)" and there will be
         //       "Numeric.POSITIVE_INFINITY" on a Numeric class...trying to avoid creating actual C# classes, though
         //       since the experiment is to use functions and closures like JavaScript.
-        private class InfinityClass
+        private class InfinityClass : JSObject
         {
             public override string ToString()
             {
@@ -116,7 +116,7 @@ namespace TonyHeupel.HyperJS
 
         #region junk - Java-related items
         #region Packages - TODO: redefine this in terms of Object later?
-        private class JavaPackage
+        private class JavaPackage : JSObject
         {
             string Name { get; set; }
             private List<JavaPackage> _children = new List<JavaPackage>();
@@ -181,7 +181,7 @@ namespace TonyHeupel.HyperJS
             throw new NotImplementedException();
         }
 
-        public class Math : HyperHypo
+        public class Math : JSObject
         {
 
         }
@@ -197,12 +197,12 @@ namespace TonyHeupel.HyperJS
             return Object(null);
         }
 
-        public static dynamic Object(HyperHypo self)
+        public static dynamic Object(JSObject self)
         {
             return cs.Object(self);
         }
 
-        private static string BaseToString(HyperHypo hh)
+        private static string BaseToString(JSObject hh)
         {
             var sb = new StringBuilder();
             sb.AppendLine(string.Format("Number of members: {0}", hh.Count));

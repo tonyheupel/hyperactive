@@ -10,7 +10,7 @@ using TonyHeupel.HyperJS;
 namespace HyperJS.UnitTest
 {
     /// <summary>
-    /// Summary description for UnitTest1
+    /// Unit tests for JS class
     /// </summary>
     [TestClass]
     public class JSTests
