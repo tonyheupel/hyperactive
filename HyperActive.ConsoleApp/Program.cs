@@ -11,49 +11,40 @@ namespace HyperActive.ConsoleApp
 {
     class Program
     {
+        /// <summary>
+        /// Simple function that is bound dynamically in Main
+        /// </summary>
+        /// <returns></returns>
         public static string SayHello() { return "Hello"; }
+
+        /// <summary>
+        /// Add a blank line and wait for a keypress in a way that allows the next 
+        /// Console.WriteLine to clear the Press any key... prompt.
+        /// </summary>
+        private static void Pause()
+        {
+            Console.WriteLine();
+            Console.Write("Press any key...");
+            Console.ReadKey();
+        }
 
         static void Main(string[] args)
         {
-            #region ExpandoObject coolness
-            Console.WriteLine("Using Expando Object\n====================");
-            dynamic stuff = new ExpandoObject();
-            stuff.Something = "something";
-            stuff.Fun = "fun";
+            dynamic third = InhertiableHyperDictionary();
 
-            foreach (object o in stuff)
-            {
-                Console.WriteLine(o);
-            }
+            ExpandoObjectLimited();
 
-            Pause();
-            #endregion
+            HyperDynamoGiveJSLikeSettersAndGettersAndForEach();
 
-            #region Simple, single-level dynamic HyperDictionary/dictionary, like JavaScript
-            Console.WriteLine("Using HyperDynamo with Plain Dictionary MemberProvider\n==================================================");
-            // Creating a dynamic dictionary.
-            dynamic person = new HyperDynamo();
+            CombiningHyperDictionaryWithHyperDynamo(third);
 
-            // Adding new dynamic properties. 
-            // The TrySetMember method is called.
-            person.FirstName = "Tony";
-            person.LastName = "Heupel";
-            person["MiddleInitial"] = "C.";
+            HelloHyperHypo();
 
-            // Getting values of the dynamic properties.
-            // The TryGetMember method is called.
-            // Note that property names are case-insensitive.
-            Console.WriteLine(person.FirstName + " " + person.MiddleInitial + " " + person["LastName"]);
-
-            //Define the enumerator on the inner HyperDictionary and then expose it for GetEnumerator
-            foreach (object o in person)
-            {
-                Console.WriteLine(o);
-            }
-            Pause();
-            #endregion
-
-            #region Inheritable HyperDictionary/dictionary
+            HelloHyperJS();
+        }
+       
+        private static dynamic InhertiableHyperDictionary()
+        {
             Console.WriteLine("Using HyperDictionary to show dictionary inheritance\n==================================================");
             var top = new HyperDictionary("top");
             top["eyes"] = "brown";
@@ -100,19 +91,83 @@ namespace HyperActive.ConsoleApp
             }
             Console.WriteLine();
             Pause();
-            #endregion
 
-            #region Awesome dynamic mappings with inheritance!!
+            return third;
+        }
+
+        /// <summary>
+        /// Demonstate that ExpandoObject is cool, but not cool enough.
+        /// </summary>
+        private static void ExpandoObjectLimited()
+        {
+            Console.WriteLine("Using Expando Object\n====================");
+            dynamic stuff = new ExpandoObject();
+            stuff.Something = "something";
+            stuff.Fun = "fun";
+            try
+            {
+                stuff["For"] = "everyone"; //Generates a runtime error (not as cool as JavaScript)
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("EXPECTED EXCEPTION - NO INDEXER/NAME ALLOWED ON EXPANDOOBJECT (stuff[\"For\"] = \"everyone\"");
+                Console.WriteLine(ex.ToString());
+            }
+
+            foreach (object o in stuff)
+            {
+                Console.WriteLine(o);
+            }
+
+            Pause();
+        }
+
+        /// <summary>
+        /// Show how even with a basic Dictionary member provider, 
+        /// HyperDynamo is cooler than ExpandoObject
+        /// </summary>
+        private static void HyperDynamoGiveJSLikeSettersAndGettersAndForEach()
+        {
+            Console.WriteLine("Using HyperDynamo with Plain Dictionary MemberProvider\n==================================================");
+            // Creating a dynamic dictionary.
+            dynamic person = new HyperDynamo();
+
+            // Adding new dynamic properties. 
+            // The TrySetMember method is called.
+            person.FirstName = "Tony";
+            person.LastName = "Heupel";
+            person["MiddleInitial"] = "C.";
+
+            // Getting values of the dynamic properties.
+            // The TryGetMember method is called.
+            // Note that property names are case-insensitive.
+            Console.WriteLine(person.FirstName + " " + person.MiddleInitial + " " + person["LastName"]);
+
+            //Define the enumerator on the inner HyperDictionary and then expose it for GetEnumerator
+            foreach (object o in person)
+            {
+                Console.WriteLine(o);
+            }
+            Pause();
+        }
+
+        /// <summary>
+        /// For real fun, combine HyperDynamo with a 
+        /// HyperDictionary member provider for some
+        /// JavaScript-like Prototype inhertance!
+        /// </summary>
+        public static void CombiningHyperDictionaryWithHyperDynamo(dynamic third)
+        {
             Console.WriteLine("Using HyperDynamo with HyperDictionary MemberProvider to show\ndynamic mappings and inheritance!\n==================================================");
-            
-            dynamic thirdDyn = new HyperDynamo("d-third", third);  //Manually use HyperDictionary with HyperDnamo
+
+            dynamic thirdDyn = new HyperDynamo(third);  //Manually use HyperDictionary with HyperDnamo
             thirdDyn.toes = "third toes set through dynamic property";
             thirdDyn.body_head = "third body_head set through dynamic property";
             Console.WriteLine("eyes:\t{0}", thirdDyn["eyes"]);
             Console.WriteLine("eyes:\t{0}", thirdDyn.eyes);
             Console.WriteLine("body_head:\t{0}", thirdDyn["eyes"]);
             Console.WriteLine("body_head:\t{0}", thirdDyn.body_head);
-            
+
             Console.WriteLine();
             try
             {
@@ -131,9 +186,14 @@ namespace HyperActive.ConsoleApp
                 Console.WriteLine(o);
             }
             Pause();
-            #endregion
+        }
 
-            #region HyperHypo --> Enable JS.CS?
+        /// <summary>
+        /// Formalize a HyperDynamo using a HyperDictionary into a concrete class
+        /// called HyperHypo (Hyper - more than C#; Hypo - less than JavaScript)
+        /// </summary>
+        private static void HelloHyperHypo()
+        {
             Console.WriteLine("Using HyperHypo (formalized HyperDynamo with HyperDictionary) to enable JS.cs\n(JavaScript-style programming within C#) called HyperJS\n==================================================");
 
             Console.WriteLine("First example: prototype inheritance where only one.Whassup is set");
@@ -145,7 +205,15 @@ namespace HyperActive.ConsoleApp
             dynamic two = new HyperHypo(one);
             Console.WriteLine("two.Whassup: {0}", two.Whassup());
             Pause();
+        }
 
+        /// <summary>
+        /// Build HyperJS on top of HyperHypo, adding "undefined" as the return value
+        /// when a property is not defined on an object.  Also create the JavaScript
+        /// "Global object".  Made Image as an add-on not part of the JS core.
+        /// </summary>
+        private static void HelloHyperJS()
+        {
             Console.WriteLine("Second example: I created a HyperJS (JavaScript using HyperDynamo) Image class\nusing extension methods so that it looks like it's baked into HyperJS but isn't\n(see code Image.cs in the ConsoleApp project for details)\n==============================");
             dynamic img = JS.Image(20, 30);
             dynamic img2 = JS.Image();
@@ -164,36 +232,8 @@ namespace HyperActive.ConsoleApp
             img2.setPrivate("set on img2 from outside");
             Console.WriteLine("img.getPrivate() (should return 'set from outside'): {0}", img.getPrivate());
             Console.WriteLine("img2.getPrivate() (should return 'set on img2 from outside'): {0}", img2.getPrivate());
-            
+
             Pause();
-            #endregion
-
-            #region Store it in RavenDB - Don't want to take this dependency right now...
-            //var store = new DocumentStore { Url = "http://localhost:8080" };
-            //store.Initialize();
-
-            //using (var session = store.OpenSession())
-            //{
-            //    session.Store(top);
-            //    session.Store(third);
-            //    session.Store(thirdDyn);
-
-            //    dynamic onlyMine = new ExpandoObject();
-            //    onlyMine.Id = "own-" +
-            //        third.Id;
-            //    onlyMine.Items = third.OwnTuples;
-            //    session.Store(onlyMine);
-            //    session.SaveChanges();
-            //}
-            //Pause();
-            #endregion
-        }
-
-        private static void Pause()
-        {
-            Console.WriteLine();
-            Console.Write("Press any key...");
-            Console.ReadKey();
         }
     }
 }
