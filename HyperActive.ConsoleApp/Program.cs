@@ -40,6 +40,8 @@ namespace HyperActive.ConsoleApp
 
             HelloHyperHypo();
 
+            CreateAClassWithAccessorsInJSStyle();
+
             HelloHyperJS();
         }
        
@@ -110,16 +112,25 @@ namespace HyperActive.ConsoleApp
             }
             catch (Exception ex)
             {
-                Console.WriteLine("EXPECTED EXCEPTION - NO INDEXER/NAME ALLOWED ON EXPANDOOBJECT (stuff[\"For\"] = \"everyone\"");
+                Console.WriteLine("EXPECTED EXCEPTION - NO INDEXER/NAME ALLOWED ON EXPANDOOBJECT (thing[\"For\"] = \"everyone\"");
                 Console.WriteLine(ex.ToString());
             }
 
-            foreach (object o in stuff)
+            DumpEnumerable(stuff);
+
+            Pause();
+        }
+
+        /// <summary>
+        /// Dump the members of an enumerable to the console
+        /// </summary>
+        /// <param name="thing"></param>
+        private static void DumpEnumerable(dynamic thing)
+        {
+            foreach (object o in thing)
             {
                 Console.WriteLine(o);
             }
-
-            Pause();
         }
 
         /// <summary>
@@ -143,11 +154,8 @@ namespace HyperActive.ConsoleApp
             // Note that property names are case-insensitive.
             Console.WriteLine(person.FirstName + " " + person.MiddleInitial + " " + person["LastName"]);
 
-            //Define the enumerator on the inner HyperDictionary and then expose it for GetEnumerator
-            foreach (object o in person)
-            {
-                Console.WriteLine(o);
-            }
+            //Defined the enumerator on the inner HyperDictionary and then expose it for GetEnumerator
+            DumpEnumerable(person);
             Pause();
         }
 
@@ -181,10 +189,7 @@ namespace HyperActive.ConsoleApp
             Pause();
 
             Console.WriteLine("Properties in the HyperDynamo object built off of 3 levels of HyperDictionary\ninheritance and a couple dynamic property setters\n========================================================================");
-            foreach (object o in thirdDyn)
-            {
-                Console.WriteLine(o);
-            }
+            DumpEnumerable(thirdDyn);
             Pause();
         }
 
@@ -204,6 +209,64 @@ namespace HyperActive.ConsoleApp
             //two inherits from one (set's it's prototype)
             dynamic two = new HyperHypo(one);
             Console.WriteLine("two.Whassup: {0}", two.Whassup());
+            Pause();
+        }
+
+        private static void CreateAClassWithAccessorsInJSStyle()
+        {
+            // Define the class as a function constructor and 
+            // private variables using closures.
+            // NOTE: No overrides on constructor -- 
+            //       to do this, move the definition out into
+            //       static methods and just call them directly
+            //       (see the Image and the global JS functions
+            //       like Boolean in this project).
+            dynamic Person = new Func<string, string, dynamic>(delegate(string firstName, string lastName)
+            {
+                var _firstName = firstName;
+                var _lastName = lastName;
+
+
+                dynamic p = new HyperHypo();
+                p.getFirstName = new Func<dynamic>(delegate() { return _firstName; });
+                p.getLastName = new Func<dynamic>(delegate() { return _lastName; });
+
+                p.setFirstName = new Func<string, object>(value => _firstName = value);
+                p.setLastName = new Func<string, object>(value => _lastName = value);
+                
+                p.toString = new Func<string>(delegate() { return String.Format("{0} {1}", _firstName, _lastName); });
+                return p;
+            });
+
+            dynamic me = Person("Tony", "Heupel");
+            dynamic singer = Person(null, null);
+
+            singer.setFirstName("Paul");
+            singer.setLastName("Hewson");
+
+            OutputPeople(me, singer);
+        }
+
+        /// <summary>
+        /// Output people from the CreateACl
+        /// </summary>
+        /// <param name="me"></param>
+        /// <param name="singer"></param>
+        private static void OutputPeople(dynamic me, dynamic singer)
+        {
+            Console.WriteLine("me.getFirstName():\t{0}", me.getFirstName());
+            Console.WriteLine("me.getLastName():\t{0}", me.getLastName());
+            Console.WriteLine("singer.getFirstName():\t{0}", singer.getFirstName());
+            Console.WriteLine("singer.getLastName():\t{0}", singer.getLastName());
+            Console.WriteLine("me:\t{0}", me.toString());
+            Console.WriteLine("singer:\t{0}", singer.toString());
+            Console.WriteLine();
+
+            // Notice that with the closure at the time the constructor was called,
+            // each Person has it's own variable scope (closure) that does not
+            // interfere -- even if the constructor is a staic method!
+            DumpEnumerable(me);
+            DumpEnumerable(singer);
             Pause();
         }
 
