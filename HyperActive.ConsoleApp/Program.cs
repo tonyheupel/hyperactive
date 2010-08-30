@@ -53,46 +53,40 @@ namespace HyperActive.ConsoleApp
             var top = new HyperDictionary("top");
             top["eyes"] = "brown";
             top["hair"] = "pointy";
-            top["body_head"] = "big";
-            top["body_stomach"] = "fat";
 
             var second = new HyperDictionary("second");
-            second["body_stomach"] = "skinny";
-            second["body_feet"] = new string[] { "very", "stinky" };
-            top.AddChild(second); //Adding Child since we may want to stry to store the WHOLE object graph in document DB
+            second.InheritsFrom(top);
+            second["hair"] = "straight";
+
+            Console.WriteLine("top[\"eyes\"]:\t{0}", top["eyes"]);
+            Console.WriteLine("top[\"hair\"]:\t{0}", top["hair"]);
+            Console.WriteLine("second[\"eyes\"]:\t{0}", second["eyes"]);
+            Console.WriteLine("second[\"hair\"]:\t{0}", second["hair"]);
+
+            //Extends and removes
+            top["things"] = new string[] { "first thing", "second thing" };
 
             var third = new HyperDictionary("third");
+            third.InheritsFrom(second);
             third.RemoveProperty("hair");
-            third.ExtendProperty("body_feet", new string[] { "NOT!" });
-            third.RemoveProperty("body_stomach");
-            third.InheritsFrom(second);  //Using InheritsFrom since we don't want this part of the object graph that could be stored in RavenDB later
+            third.ExtendProperty("things", new object[] { 3, 4, 5 });
 
-            Console.WriteLine("top\tbody_head:\t{0}", top["body_head"]);
-            Console.WriteLine("top\tbody_stomach:\t{0}", top["body_stomach"]);
 
-            Console.WriteLine("second\tbody_head:\t{0}", second["body_head"]);
-            Console.WriteLine("second\tbody_stomach:\t{0}", second["body_stomach"]);
-            Console.Write("second\tbody_feet values:\t");
-            var feet = second["body_feet"] as IEnumerable<object>;
-            foreach (string foot in feet)
+            Console.Write("third things:\t");
+            var things = third["things"] as IEnumerable<object>;
+            foreach (object thing in things)
             {
-                Console.Write(foot + " ");
+                Console.Write(" | " + thing.ToString());
             }
+            Console.Write(" | ");
             Console.WriteLine();
-            Console.WriteLine("third body_head: {0}", third["body_head"]);
 
             Console.WriteLine("Making sure TryGetProperty works...should have 'not set' as the next value...");
             object stomach;
             if (third.TryGetProperty("body_stomach", out stomach)) Console.WriteLine("third\tbody_stomach:\t{0}", stomach);
             else Console.WriteLine("not set - third.body_stomach");
 
-            Console.WriteLine("Making sure Extending of IEnumerables in a subclass works...should have 'NOT!' at the end...");
-            Console.Write("third\tbody_feet values:\t");
-            feet = third["body_feet"] as IEnumerable<object>;
-            foreach (string foot in feet)
-            {
-                Console.Write(foot + " ");
-            }
+            
             Console.WriteLine();
             Pause();
 
