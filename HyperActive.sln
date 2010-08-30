@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HyperActive.ConsoleApp", "HyperActive.ConsoleApp\HyperActive.ConsoleApp.csproj", "{6FC01105-A09A-4070-93B3-DB6CE2BBF48B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HyperJS", "HyperJS\HyperJS.csproj", "{45D11F9C-BD78-4342-AA19-7C3BB80C3CDE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HyperJS.UnitTest", "HyperJS.UnitTest\HyperJS.UnitTest.csproj", "{D0031E38-3505-4E1D-B5E3-8BC9CCC3351F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7ED43382-85FA-46F9-8B4B-BFD0F1FB4B3A}"
 	ProjectSection(SolutionItems) = preProject
 		readme.txt = readme.txt
@@ -32,26 +28,6 @@ Global
 		{6FC01105-A09A-4070-93B3-DB6CE2BBF48B}.Release|Mixed Platforms.Build.0 = Release|x86
 		{6FC01105-A09A-4070-93B3-DB6CE2BBF48B}.Release|x86.ActiveCfg = Release|x86
 		{6FC01105-A09A-4070-93B3-DB6CE2BBF48B}.Release|x86.Build.0 = Release|x86
-		{45D11F9C-BD78-4342-AA19-7C3BB80C3CDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45D11F9C-BD78-4342-AA19-7C3BB80C3CDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45D11F9C-BD78-4342-AA19-7C3BB80C3CDE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{45D11F9C-BD78-4342-AA19-7C3BB80C3CDE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{45D11F9C-BD78-4342-AA19-7C3BB80C3CDE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{45D11F9C-BD78-4342-AA19-7C3BB80C3CDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45D11F9C-BD78-4342-AA19-7C3BB80C3CDE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{45D11F9C-BD78-4342-AA19-7C3BB80C3CDE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{45D11F9C-BD78-4342-AA19-7C3BB80C3CDE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{45D11F9C-BD78-4342-AA19-7C3BB80C3CDE}.Release|x86.ActiveCfg = Release|Any CPU
-		{D0031E38-3505-4E1D-B5E3-8BC9CCC3351F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D0031E38-3505-4E1D-B5E3-8BC9CCC3351F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D0031E38-3505-4E1D-B5E3-8BC9CCC3351F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{D0031E38-3505-4E1D-B5E3-8BC9CCC3351F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{D0031E38-3505-4E1D-B5E3-8BC9CCC3351F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D0031E38-3505-4E1D-B5E3-8BC9CCC3351F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D0031E38-3505-4E1D-B5E3-8BC9CCC3351F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D0031E38-3505-4E1D-B5E3-8BC9CCC3351F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{D0031E38-3505-4E1D-B5E3-8BC9CCC3351F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{D0031E38-3505-4E1D-B5E3-8BC9CCC3351F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

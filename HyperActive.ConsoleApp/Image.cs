@@ -7,7 +7,7 @@ using System.Dynamic;
 using TonyHeupel.HyperJS;
 using TonyHeupel.HyperCore;
 
-namespace HyperActive.JSExtensions
+namespace TonyHeupel.HyperActive.JSExtensions
 {
     public static class JSExtensionsForImage
     {

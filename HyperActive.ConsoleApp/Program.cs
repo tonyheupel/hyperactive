@@ -7,6 +7,8 @@ using System.Dynamic;
 using TonyHeupel.HyperCore;
 using TonyHeupel.HyperJS;
 
+using TonyHeupel.HyperActive.JSExtensions; // To get the Image class
+
 namespace HyperActive.ConsoleApp
 {
     class Program
@@ -278,8 +280,10 @@ namespace HyperActive.ConsoleApp
         private static void HelloHyperJS()
         {
             Console.WriteLine("Second example: I created a HyperJS (JavaScript using HyperDynamo) Image class\nusing extension methods so that it looks like it's baked into HyperJS but isn't\n(see code Image.cs in the ConsoleApp project for details)\n==============================");
-            dynamic img = JS.Image(20, 30);
-            dynamic img2 = JS.Image();
+            // NOTE: Image functions are extension methods added inside this assembly
+            //       and made available with 'using TonyHeupel.HyperActive.JSExtensions;' 
+            dynamic img = JS.cs.Image(20, 30);
+            dynamic img2 = JS.cs.Image();
 
             Console.WriteLine();
             Console.WriteLine("img.width: {0}\nimg.height: {1}", img.width, img.height);

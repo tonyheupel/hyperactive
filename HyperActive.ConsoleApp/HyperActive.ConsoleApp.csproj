@@ -8,8 +8,8 @@
     <ProjectGuid>{6FC01105-A09A-4070-93B3-DB6CE2BBF48B}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HyperActive.Console</RootNamespace>
-    <AssemblyName>HyperActive.Console</AssemblyName>
+    <RootNamespace>TonyHeupel.HyperActive.Console</RootNamespace>
+    <AssemblyName>TonyHeupel.HyperActive.Console</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -44,14 +44,18 @@
     <Reference Include="TonyHeupel.HyperCore">
       <HintPath>..\..\HyperCore\HyperCore\bin\Debug\TonyHeupel.HyperCore.dll</HintPath>
     </Reference>
-    <Reference Include="TonyHeupel.HyperJS">
-      <HintPath>..\..\HyperCore\HyperJS\bin\Debug\TonyHeupel.HyperJS.dll</HintPath>
+    <Reference Include="TonyHeupel.HyperJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\HyperJS\HyperJS\bin\Debug\TonyHeupel.HyperJS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Image.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
