@@ -20,7 +20,7 @@ namespace TonyHeupel.HyperActive.JSExtensions
         {
             //dynamic img = new HyperHypo(Object());
             dynamic img = new HyperHypo();
-            img.Prototype = JS.cs.Object(img); // Pass the img object in so it knows what "this" (self) is...maybe take this out?
+            img.Prototype = JS.go.Object(img); // Pass the img object in so it knows what "this" (self) is...maybe take this out?
                                                // Should actually create a DOM Element base class with name and id and use that...
             img.width = width;
             img.height = height;
