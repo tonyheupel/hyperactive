@@ -63,7 +63,7 @@ namespace HyperActive.ConsoleApp
             Console.WriteLine("second[\"eyes\"]:\t{0}", second["eyes"]);
             Console.WriteLine("second[\"hair\"]:\t{0}", second["hair"]);
 
-            //Extends and removes
+            //Extends and removes using an IEnumerable<object> value
             top["things"] = new string[] { "first thing", "second thing" };
 
             var third = new HyperDictionary("third");
@@ -71,7 +71,17 @@ namespace HyperActive.ConsoleApp
             third.RemoveProperty("hair");
             third.ExtendProperty("things", new object[] { 3, 4, 5 });
 
+            //Output members of third - note the absence of "hair" member
+            Console.Write("third members:\n");
+            foreach (object o in third)
+            {
+                Console.WriteLine(o);
+            }
+            Console.WriteLine();
 
+            // Output the extended list of items in "things", 
+            // some from top and some from third.
+            // And notice: DIFFERENT DATA TYPES!
             Console.Write("third things:\t");
             var things = third["things"] as IEnumerable<object>;
             foreach (object thing in things)
@@ -83,8 +93,8 @@ namespace HyperActive.ConsoleApp
 
             Console.WriteLine("Making sure TryGetProperty works...should have 'not set' as the next value...");
             object stomach;
-            if (third.TryGetProperty("body_stomach", out stomach)) Console.WriteLine("third\tbody_stomach:\t{0}", stomach);
-            else Console.WriteLine("not set - third.body_stomach");
+            if (third.TryGetProperty("stomach", out stomach)) Console.WriteLine("third\tstomach:\t{0}", stomach);
+            else Console.WriteLine("not set - third.stomach");
 
             
             Console.WriteLine();
@@ -113,20 +123,7 @@ namespace HyperActive.ConsoleApp
             }
 
             DumpEnumerable(stuff);
-
             Pause();
-        }
-
-        /// <summary>
-        /// Dump the members of an enumerable to the console
-        /// </summary>
-        /// <param name="thing"></param>
-        private static void DumpEnumerable(dynamic thing)
-        {
-            foreach (object o in thing)
-            {
-                Console.WriteLine(o);
-            }
         }
 
         /// <summary>
@@ -136,21 +133,14 @@ namespace HyperActive.ConsoleApp
         private static void HyperDynamoGiveJSLikeSettersAndGettersAndForEach()
         {
             Console.WriteLine("Using HyperDynamo with Plain Dictionary MemberProvider\n==================================================");
-            // Creating a dynamic dictionary.
-            dynamic person = new HyperDynamo();
 
-            // Adding new dynamic properties. 
-            // The TrySetMember method is called.
+            dynamic person = new HyperDynamo();
             person.FirstName = "Tony";
             person.LastName = "Heupel";
-            person["MiddleInitial"] = "C.";
+            person["MiddleInitial"] = "C";
 
-            // Getting values of the dynamic properties.
-            // The TryGetMember method is called.
-            // Note that property names are case-insensitive.
-            Console.WriteLine(person.FirstName + " " + person.MiddleInitial + " " + person["LastName"]);
+            Console.WriteLine(person["FirstName"] + " " + person.MiddleInitial + ". " + person.LastName);
 
-            //Defined the enumerator on the inner HyperDictionary and then expose it for GetEnumerator
             DumpEnumerable(person);
             Pause();
         }
@@ -164,19 +154,18 @@ namespace HyperActive.ConsoleApp
         {
             Console.WriteLine("Using HyperDynamo with HyperDictionary MemberProvider to show\ndynamic mappings and inheritance!\n==================================================");
 
-            dynamic thirdDyn = new HyperDynamo(third);  //Manually use HyperDictionary with HyperDnamo
-            thirdDyn.toes = "third toes set through dynamic property";
-            thirdDyn.body_head = "third body_head set through dynamic property";
-            Console.WriteLine("eyes:\t{0}", thirdDyn["eyes"]);
-            Console.WriteLine("eyes:\t{0}", thirdDyn.eyes);
-            Console.WriteLine("body_head:\t{0}", thirdDyn["eyes"]);
-            Console.WriteLine("body_head:\t{0}", thirdDyn.body_head);
+            dynamic dynoThird = new HyperDynamo(third);  //Manually use HyperDictionary with HyperDynamo
+            dynoThird.toes = "third toes set through dynamic property";
+            Console.WriteLine("eyes:\t{0}", dynoThird["eyes"]);
+            Console.WriteLine("eyes:\t{0}", dynoThird.eyes);
+            Console.WriteLine("toes:\t{0}", dynoThird["toes"]);
+            Console.WriteLine("toes:\t{0}", dynoThird.toes);
 
             Console.WriteLine();
             try
             {
                 //Should throw an exception since it got removed at this level
-                Console.WriteLine("hair:\t{0}", thirdDyn.hair);
+                Console.WriteLine("hair:\t{0}", dynoThird.hair);
             }
             catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException rbe)
             {
@@ -185,7 +174,7 @@ namespace HyperActive.ConsoleApp
             Pause();
 
             Console.WriteLine("Properties in the HyperDynamo object built off of 3 levels of HyperDictionary\ninheritance and a couple dynamic property setters\n========================================================================");
-            DumpEnumerable(thirdDyn);
+            DumpEnumerable(dynoThird);
             Pause();
         }
 
@@ -195,21 +184,24 @@ namespace HyperActive.ConsoleApp
         /// </summary>
         private static void HelloHyperHypo()
         {
-            Console.WriteLine("Using HyperHypo (formalized HyperDynamo with HyperDictionary) to enable JS.cs\n(JavaScript-style programming within C#) called HyperJS\n==================================================");
+            Console.WriteLine("Using HyperDynamo with HyperDictionary membership provider\n==========================================================");
 
             Console.WriteLine("First example: prototype inheritance where only one.Whassup is set");
             dynamic one = new HyperHypo();
             one.Whassup = new Func<string>(SayHello);
-            Console.WriteLine("one.Whassup: {0}", one.Whassup());
+            Console.WriteLine("one.Whassup(): {0}", one.Whassup());
 
             //two inherits from one (set's it's prototype)
             dynamic two = new HyperHypo(one);
-            Console.WriteLine("two.Whassup: {0}", two.Whassup());
+            two.HowsItGoing = new Func<string, string>(name => String.Format("How's it going, {0}?", name));
+            Console.WriteLine("two.Whassup(): {0}", two.Whassup());
+            Console.WriteLine("two.HowsItGoing(\"buddy\"): {0}", two.HowsItGoing("buddy"));
             Pause();
         }
 
         private static void CreateAClassWithAccessorsInJSStyle()
         {
+            Console.WriteLine("Using HyperHypo (HyperDynamo with HyperDictionary)\nand closures to create JavaScript-style object declarations\n==========================================================================");
             // Define the class as a function constructor and 
             // private variables using closures.
             // NOTE: No overrides on constructor -- 
@@ -295,6 +287,19 @@ namespace HyperActive.ConsoleApp
             Console.WriteLine("img2.getPrivate() (should return 'set on img2 from outside'): {0}", img2.getPrivate());
 
             Pause();
+        }
+
+
+        /// <summary>
+        /// Dump the members of an enumerable to the console
+        /// </summary>
+        /// <param name="thing"></param>
+        private static void DumpEnumerable(dynamic thing)
+        {
+            foreach (object o in thing)
+            {
+                Console.WriteLine(o);
+            }
         }
     }
 }
