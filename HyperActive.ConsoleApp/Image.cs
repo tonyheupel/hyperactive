@@ -9,19 +9,23 @@ using TonyHeupel.HyperCore;
 
 namespace TonyHeupel.HyperActive.JSExtensions
 {
-    public static class JSExtensionsForImage
+    public static class Image
     {
-        public static dynamic Image(this JS js)
+        public static dynamic NewImage(this JS js)
         {
-            return Image(js, 0, 0);
+            return NewImage(js, 0, 0);
         }
 
-        public static dynamic Image(this JS js, int width, int height)
+        public static dynamic NewImage(this JS js, int width, int height)
         {
-            //dynamic img = new HyperHypo(Object());
-            dynamic img = new HyperHypo();
-            img.Prototype = JS.cs.NewObject(img as object); // Pass the img object in so it knows what "this" (self) is...maybe take this out?
-                                               // Should actually create a DOM Element base class with name and id and use that...
+            dynamic img = new JSObject();
+            img.JSTypeName = "Image";
+
+            // Set up the prototype
+            dynamic p = new JSObject();
+            img.Prototype = img.GetPrototype(p);  // Should actually create a DOM Element base class with name and id and use that...
+            
+            // Set up instance items
             img.width = width;
             img.height = height;
 
@@ -33,16 +37,6 @@ namespace TonyHeupel.HyperActive.JSExtensions
             img.longDesc = "";      // Uri of a long image description
             img.useMap = "";        // Specifies a client-side image map for the image
 
-
-            #region Just playing around
-            img.doStuff = new Func<string, string>(someArg => string.Format("[someArg: {0}, width: {1}, height: {2}]", someArg, img.width, img.height));
-
-            //Private variables with Closures and no collision even though in static method?  Awesome...
-            var _iamprivate = "private var";
-
-            img.getPrivate = new Func<string>(delegate() { return _iamprivate; });
-            img.setPrivate = new Func<string, object>(delegate(string newPrivate) { _iamprivate = newPrivate; return null; });
-            #endregion
 
             return img;
         }

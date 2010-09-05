@@ -268,8 +268,8 @@ namespace HyperActive.ConsoleApp
             Console.WriteLine("Second example: I created a HyperJS (JavaScript using HyperDynamo) Image class\nusing extension methods so that it looks like it's baked into HyperJS but isn't\n(see code Image.cs in the ConsoleApp project for details)\n==============================");
             // NOTE: Image functions are extension methods added inside this assembly
             //       and made available with 'using TonyHeupel.HyperActive.JSExtensions;' 
-            dynamic img = JS.cs.Image(20, 30);
-            dynamic img2 = JS.cs.Image();
+            dynamic img = JS.cs.NewImage(20, 30);
+            dynamic img2 = JS.cs.NewImage();
 
             Console.WriteLine();
             Console.WriteLine("img.width: {0}\nimg.height: {1}", img.width, img.height);
@@ -277,14 +277,6 @@ namespace HyperActive.ConsoleApp
             Console.WriteLine("img.toString(): {0}\n", img.toString());
             Console.WriteLine();
             Console.WriteLine("img2.toString(): {0}\n", img2.toString());
-            Console.WriteLine();
-            Console.WriteLine("img.doStuff(Tony): {0}", img.doStuff("Tony"));
-            Console.WriteLine();
-            Console.WriteLine("img.getPrivate (should return 'private var'): {0}", img.getPrivate());
-            img.setPrivate("set from outside");
-            img2.setPrivate("set on img2 from outside");
-            Console.WriteLine("img.getPrivate() (should return 'set from outside'): {0}", img.getPrivate());
-            Console.WriteLine("img2.getPrivate() (should return 'set on img2 from outside'): {0}", img2.getPrivate());
 
             Pause();
         }
