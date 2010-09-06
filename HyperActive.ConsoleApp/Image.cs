@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Dynamic;
-using TonyHeupel.HyperJS;
-using TonyHeupel.HyperCore;
+﻿using TonyHeupel.HyperJS;
 
 namespace TonyHeupel.HyperActive.JSExtensions
 {
