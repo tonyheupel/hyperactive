@@ -7,7 +7,7 @@ using System.Dynamic;
 using TonyHeupel.HyperCore;
 using TonyHeupel.HyperJS;
 
-using TonyHeupel.HyperActive.JSExtensions; // To get the Image class
+using TonyHeupel.HyperActive.JSExtensions;  // To get the Image class
 
 namespace HyperActive.ConsoleApp
 {
@@ -32,6 +32,8 @@ namespace HyperActive.ConsoleApp
 
         static void Main(string[] args)
         {
+            TryXmlSimple();
+
             dynamic third = InhertiableHyperDictionary();
 
             ExpandoObjectLimited();
@@ -292,6 +294,22 @@ namespace HyperActive.ConsoleApp
             {
                 Console.WriteLine(o);
             }
+        }
+
+        /// <summary>
+        /// Try using an XMLSimple style xml parser for C# 4
+        /// </summary>
+        private static void TryXmlSimple()
+        {
+            string xml = @"<Library Name=""Covington""><Books><Book Title=""Soon Will Come the Light"" Author=""Tom McKean""></Book><Book Title=""Fall of Giants"" Author=""Ken Follett"" /></Books></Library>";
+
+            dynamic library = TonyHeupel.HyperXml.XmlSimple.XmlIn(xml);
+
+            DumpEnumerable(library);
+            DumpEnumerable(library.Books);
+            DumpEnumerable(library.Books.Book[0]);
+            DumpEnumerable(library.Books.Book[1]);
+            Console.WriteLine(library.Books.Book[1].Title);
         }
     }
 }
