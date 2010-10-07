@@ -343,8 +343,8 @@ namespace HyperActive.ConsoleApp
             dynamic data = TonyHeupel.HyperXml.XmlSimple.XmlIn(xmlData);
             
             // The next two lines are equivalent
-            data.Result.ForEach(new Action<dynamic>(result => Console.WriteLine("{0} => {1}", result.Title, result.Url)));
-            data["Result"].ForEach(new Action<dynamic>(result => Console.WriteLine("{0} => {1}", result["Title"], result["Url"])));
+            data.Result.ForEach(new Action<dynamic>(result => Console.WriteLine("{0} => {1}", result.Title, result.URl)));
+            data["result"].ForEach(new Action<dynamic>(result => Console.WriteLine("{0} => {1}", result["TiTle"], result["URL"])));
             Pause();
         }
     }

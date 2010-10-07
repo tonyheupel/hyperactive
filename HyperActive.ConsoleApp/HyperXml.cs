@@ -167,6 +167,20 @@ namespace TonyHeupel.HyperXml
         #endregion
 
         #region Overrides
+        public override object this[string name]
+        {
+            get
+            {
+                dynamic result;
+                if (TryGetName(name, out result)) return result;
+
+                return base[name];
+            }
+            set
+            {
+                base[name] = value;
+            }
+        }
         public override bool TryGetMember(System.Dynamic.GetMemberBinder binder, out object result)
         {
             return GetNameHeuristic(binder.Name, out result);
@@ -191,14 +205,18 @@ namespace TonyHeupel.HyperXml
         {
             if (this.ContainsKey(name))
             {
-                result = this[name];
+                return this.TryGetValue(name, out result);
+            }
+
+            string foundKey = this.Keys.FirstOrDefault(key => 0 == String.Compare(key, name, true));
+            if (!String.IsNullOrWhiteSpace(foundKey))
+            {
+                result = this[foundKey];
                 return true;
             }
-            else
-            {
-                result = null;
-                return false;
-            }
+
+            result = null;
+            return false;
         }
         #endregion
     }
