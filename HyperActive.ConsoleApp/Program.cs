@@ -338,10 +338,14 @@ namespace HyperActive.ConsoleApp
 
             // The XmlSimple.NET version
             var url = "http://api.search.yahoo.com/WebSearchService/V1/webSearch?appid=YahooDemo&query=madonna&results=2";
-            var xmlData = new System.Net.WebClient().DownloadString(url);
+            //var xmlData = new System.Net.WebClient().DownloadString(url);
 
-            dynamic data = TonyHeupel.HyperXml.XmlSimple.XmlIn(xmlData);
-            
+            dynamic data = TonyHeupel.HyperXml.XmlSimple.XmlIn(url);
+
+            Dictionary<TonyHeupel.HyperXml.XmlSimple.Options, object> options = new Dictionary<TonyHeupel.HyperXml.XmlSimple.Options,object>();
+            options[TonyHeupel.HyperXml.XmlSimple.Options.AttrPrefix] = true;
+            dynamic dataAttrPrefix = TonyHeupel.HyperXml.XmlSimple.XmlIn(url, options);
+
             // The next two lines are equivalent
             data.Result.ForEach(new Action<dynamic>(result => Console.WriteLine("{0} => {1}", result.Title, result.URl)));
             data["result"].ForEach(new Action<dynamic>(result => Console.WriteLine("{0} => {1}", result["TiTle"], result["URL"])));
