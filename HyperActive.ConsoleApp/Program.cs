@@ -32,7 +32,8 @@ namespace HyperActive.ConsoleApp
 
         static void Main(string[] args)
         {
-            TryXmlSimpleWithYahoo();
+            // TODO: Replace because Yahoo! API was deprecated
+			//TryXmlSimpleWithYahoo();
 
             TryXmlSimple();
 
